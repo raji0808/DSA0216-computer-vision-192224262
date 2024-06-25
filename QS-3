@@ -1,0 +1,40 @@
+import cv2
+import matplotlib.pyplot as plt
+
+# Read the image from file
+image = cv2.imread(r'C:\Users\HP\Pictures\Screenshots\Screenshot (266).png')
+
+# Check if the image was loaded properly
+if image is None:
+    print("Error: Could not open or find the image.")
+else:
+    # Resize the image to smaller dimensions
+    smaller_image = cv2.resize(image, (image.shape[1] // 2, image.shape[0] // 2), interpolation=cv2.INTER_AREA)
+
+    # Resize the image to larger dimensions
+    larger_image = cv2.resize(image, (image.shape[1] * 2, image.shape[0] * 2), interpolation=cv2.INTER_LINEAR)
+
+    # Convert the images from BGR to RGB for displaying using matplotlib
+    image_rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+    smaller_image_rgb = cv2.cvtColor(smaller_image, cv2.COLOR_BGR2RGB)
+    larger_image_rgb = cv2.cvtColor(larger_image, cv2.COLOR_BGR2RGB)
+
+    # Display the original, smaller, and larger images
+    plt.figure(figsize=(15, 5))
+
+    plt.subplot(1, 3, 1)
+    plt.imshow(image_rgb)
+    plt.title('Original Image')
+    plt.axis('off')
+
+    plt.subplot(1, 3, 2)
+    plt.imshow(smaller_image_rgb)
+    plt.title('Smaller Image')
+    plt.axis('off')
+
+    plt.subplot(1, 3, 3)
+    plt.imshow(larger_image_rgb)
+    plt.title('Larger Image')
+    plt.axis('off')
+
+    plt.show()
