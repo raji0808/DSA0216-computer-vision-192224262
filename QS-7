@@ -1,0 +1,23 @@
+import cv2
+import numpy as np
+
+# Load the image
+image = cv2.imread(r'C:\Users\HP\Pictures\Screenshots\Screenshot (220).png')
+
+# Get the dimensions of the image
+(h, w) = image.shape[:2]
+
+# Calculate the center of the image
+center = (w // 2, h // 2)
+
+# Define the rotation matrix for 180 degrees clockwise
+rotation_matrix = cv2.getRotationMatrix2D(center, -180, 1.0)
+
+# Perform the rotation
+rotated_image = cv2.warpAffine(image, rotation_matrix, (w, h))
+
+# Display the original and rotated images
+cv2.imshow("Original Image", image)
+cv2.imshow("Rotated Image", rotated_image)
+cv2.waitKey(0)
+cv2.destroyAllWindows()
