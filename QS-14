@@ -1,0 +1,45 @@
+import cv2
+import matplotlib.pyplot as plt
+
+def equalize_histogram_color(image):
+    # Convert the image from BGR to YCrCb color space
+    ycrcb_img = cv2.cvtColor(image, cv2.COLOR_BGR2YCrCb)
+
+    # Equalize the histogram of the Y channel
+    ycrcb_img[:, :, 0] = cv2.equalizeHist(ycrcb_img[:, :, 0])
+
+    # Convert the image back to BGR color space
+    equalized_img = cv2.cvtColor(ycrcb_img, cv2.COLOR_YCrCb2BGR)
+    return equalized_img
+
+# Main script
+image_path =  r'C:\Users\HP\OneDrive\Pictures\Camera imports\2023-08-26 (2)\Snapchat-613543246.jpg'
+
+# Read the image from file
+image = cv2.imread(image_path)
+
+# Check if the image was loaded properly
+if image is None:
+    print("Error: Could not open or find the image.")
+else:
+    # Apply histogram equalization
+    equalized_image = equalize_histogram_color(image)
+
+    # Convert the images from BGR to RGB for displaying using matplotlib
+    image_rgb = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+    equalized_image_rgb = cv2.cvtColor(equalized_image, cv2.COLOR_BGR2RGB)
+
+    # Display the original and equalized images
+    plt.figure(figsize=(10, 5))
+
+    plt.subplot(1, 2, 1)
+    plt.imshow(image_rgb)
+    plt.title('Original Image')
+    plt.axis('off')
+
+    plt.subplot(1, 2, 2)
+    plt.imshow(equalized_image_rgb)
+    plt.title('Equalized Image')
+    plt.axis('off')
+
+    plt.show()
