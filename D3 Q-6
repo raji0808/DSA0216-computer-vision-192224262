@@ -1,0 +1,38 @@
+import cv2
+import numpy as np
+
+# Load the stereo image pair
+left_image_path = r'C:\Users\HP\Pictures\Screenshots\Screenshot (290).png'
+right_image_path = r'C:\Users\HP\Pictures\Screenshots\Screenshot (290).png'
+left_image = cv2.imread(left_image_path, cv2.IMREAD_GRAYSCALE)
+right_image = cv2.imread(right_image_path, cv2.IMREAD_GRAYSCALE)
+
+# Parameters for SGBM
+window_size = 5
+min_disp = 0
+num_disp = 16 * 9  # Needs to be divisible by 16
+
+# Create SGBM matcher
+stereo = cv2.StereoSGBM_create(
+    minDisparity=min_disp,
+    numDisparities=num_disp,
+    blockSize=window_size,
+    P1=8 * 3 * window_size ** 2,
+    P2=32 * 3 * window_size ** 2,
+    disp12MaxDiff=1,
+    uniquenessRatio=10,
+    speckleWindowSize=100,
+    speckleRange=32
+)
+
+# Compute the disparity map
+disparity_map = stereo.compute(left_image, right_image).astype(np.float32) / 16.0
+
+# Normalize the disparity map for visualization
+disparity_map_normalized = cv2.normalize(disparity_map, None, alpha=0, beta=255, norm_type=cv2.NORM_MINMAX)
+disparity_map_normalized = np.uint8(disparity_map_normalized)
+
+# Display the disparity map
+cv2.imshow('Disparity Map', disparity_map_normalized)
+cv2.waitKey(0)
+cv2.destroyAllWindows()
